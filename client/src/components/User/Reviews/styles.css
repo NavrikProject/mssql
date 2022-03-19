@@ -1,0 +1,53 @@
+/* <Arrow direction="left" onClick={() => slideHandleClick("left")}>
+              <ArrowLeftOutlined />
+            </Arrow>
+
+            <Wrapper slideIndex={slideIndex}>
+              {reviews.map((review) => (
+                <>
+                  <ImgContainer>
+                    <Image alt="review" src={review.image} />
+                  </ImgContainer>
+                  <ReviewContainer>
+                    <ReviewDescription>{review.description}</ReviewDescription>
+                    <ReviewPersonTitle>{review.name}</ReviewPersonTitle>
+                    <ReviewDescription>{review.courseTaken}</ReviewDescription>
+                    <Rating>
+                      5 <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                      <i className="fas fa-star"></i>
+                    </Rating>
+                  </ReviewContainer>
+                </>
+              ))}
+            </Wrapper>
+
+            <Arrow direction="right" onClick={() => slideHandleClick("right")}>
+              <ArrowRightOutlined />
+            </Arrow> */
+
+.slideshow {
+  margin: 0 auto;
+  overflow: hidden;
+  max-width: 50vw;
+}
+
+.slide {
+  height: 400px;
+  width: 100%;
+  border-radius: 40px;
+}
+.slideshowDots {
+  text-align: center;
+}
+.slideshowDot {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 15px 7px 0px;
+  background-color: #c4c4c4;
+}
