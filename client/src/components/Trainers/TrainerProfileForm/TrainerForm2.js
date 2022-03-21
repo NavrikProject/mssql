@@ -4,6 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import Loading from "../../utils/Loading";
 const CloseButton = styled(AiOutlineClose)`
   font-size: 25px;
   color: #111;
@@ -60,13 +61,14 @@ const TrainerForm2 = (props) => {
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
 
   const changePersonalDetails = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true);
       const result = await axios.put(
         `/trainer/profile/update/${user?.id}`,
         { firstName: firstName, lastName: lastName, email: user.email },
@@ -79,15 +81,18 @@ const TrainerForm2 = (props) => {
         toast.success("Successfully update your personal details", {
           position: "top-center",
         });
+        setLoading(false);
       }
       if (result.data.error) {
         setError(result.data.error);
         toast.error("There was a problem updating your personal details", {
           position: "top-center",
         });
+        setLoading(false);
       }
       setFirstName(" ");
       setLastName(" ");
+      setLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -99,6 +104,7 @@ const TrainerForm2 = (props) => {
       <FormDiv>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
+        {loading && <Loading />}
         <Form onSubmit={changePersonalDetails}>
           <FormInput
             value={firstName}

@@ -25,7 +25,7 @@ import {
   CartQuantity1,
   ProfileImg1,
 } from "./TraineeNavbarElements.js";
-import logo from "../../../images/logo-rm.png";
+import logo from "../../../images/logo-rm1.png";
 import { logOut } from "../../../redux/userRedux.js";
 import axios from "axios";
 
@@ -57,7 +57,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
     <Nav>
       <LogoContainer>
         <Link
-          style={{ textDecoration: "none", color: "#111" }}
+          style={{ textDecoration: "none", color: "#ee6c4d" }}
           to={`/${type}`}
         >
           <LogoImage src={logo} alt="brand " />
@@ -68,7 +68,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           {/* redirect to home page */}
           <NavItem>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to={`/${user?.type}`}
             >
               Home
@@ -76,7 +76,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           </NavItem>
           <NavItem>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to="/courses"
             >
               Courses
@@ -84,7 +84,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           </NavItem>
           <NavItem>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to="/trainers"
             >
               Instructor
@@ -105,7 +105,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           <RightbarContainerList>
             {user?.role === 1 && (
               <Link
-                style={{ textDecoration: "none", color: "#111" }}
+                style={{ textDecoration: "none", color: "#ee6c4d" }}
                 to={`/user/admin/dashboard`}
               >
                 Admin
@@ -114,7 +114,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           </RightbarContainerList>
           <RightbarContainerList>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to={`/${user?.type}/profile/update/${user?.id}`}
             >
               Profile
@@ -124,7 +124,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
             <CartBox>
               <Link
                 to={`/${user?.type}/cart`}
-                style={{ textDecoration: "none", color: "#111" }}
+                style={{ textDecoration: "none", color: "#ee6c4d" }}
               >
                 <FaCartIcon />
               </Link>
@@ -133,7 +133,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           </RightbarContainerList> */}
           <RightbarContainerList onClick={onLogoutHandler}>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to={`/login`}
             >
               Logout
@@ -141,7 +141,7 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           </RightbarContainerList>
           {traineeDetails?.map((trainee) => (
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to={`/${user?.type}/profile/update/${user?.id}`}
             >
               <ProfileImg src={`${trainee.trainee_image}`} alt="Profile" />
@@ -154,13 +154,13 @@ const TraineeNavbar = ({ toggleMenuItems }) => {
           <CartBox>
             <Link
               to={`/${user?.type}/cart`}
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
             >
               <FaCartIcon /> <CartQuantity1>{quantity}</CartQuantity1>
             </Link>
           </CartBox>
           <Link
-            style={{ textDecoration: "none", color: "#111" }}
+            style={{ textDecoration: "none", color: "#ee6c4d" }}
             to={`/${user?.type}/profile/update/${user?.id}`}
           >
             {traineeDetails?.map((trainee) => (

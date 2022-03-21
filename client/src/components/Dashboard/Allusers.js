@@ -1,25 +1,30 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+import Loading from "../utils/Loading";
 const Allusers = () => {
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
   console.log(token);
   const [allUsers, setAllUsers] = useState([]);
   const [approve, setApprove] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getAllTheUsers = async () => {
+      setLoading(true);
       const res = await axios.get(`/users/get`, {
         headers: { authorization: "Bearer " + token },
       });
-      setAllUsers(res.data);
+      if (res.data) {
+        setLoading(false);
+        setAllUsers(res.data);
+      }
     };
     getAllTheUsers();
   }, [token]);
 
   const userAdminApproveHandler = async (user) => {
+    setLoading(true);
     const res = await axios.put(
       `/users/update/approve/${user.user_dtls_id}`,
       { id: user.user_dtls_id },
@@ -31,9 +36,11 @@ const Allusers = () => {
       alert(res.data.success);
       window.location.reload();
       setApprove(!approve);
+      setLoading(false);
     }
   };
   const userAdminDisApproveHandler = async (user) => {
+    setLoading(true);
     const res = await axios.put(
       `/users/update/disapprove/${user.user_dtls_id}`,
       { id: user.user_dtls_id },
@@ -45,12 +52,14 @@ const Allusers = () => {
       alert(res.data.success);
       setApprove(!approve);
       window.location.reload();
+      setLoading(false);
     }
   };
   return (
     <div className="rightbarSect">
       <div className="tableDiv">
         <h1>Approve the trainers</h1>
+        {loading && <Loading />}
         <div className="itmes">
           <div className="flex1">
             <div className="greenBox"></div>

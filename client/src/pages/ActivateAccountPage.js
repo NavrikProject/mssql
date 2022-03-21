@@ -6,7 +6,7 @@ import GoToTop from "../components/GoToTop";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import Loading from "../components/utils/Loading";
 const PwdSectionSection = styled.section`
   height: 50vh;
   width: 100%;
@@ -54,15 +54,25 @@ const InputButton = styled.button`
     cursor: not-allowed;
   }
 `;
-
+const SignInP = styled.p`
+  text-decoration: none;
+  color: #fa4299;
+  cursor: pointer;
+  font-size: 21px;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 const ActivateAccountPage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
   const params = useParams();
 
   const activateAccount = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true);
       const res = await axios.post(
         `/auth/email-account-activate/${params.id}`,
         { signUpToken: params.id }
@@ -71,15 +81,17 @@ const ActivateAccountPage = () => {
         setError(res.data.error);
         toast.success(res.data.success, { position: "top-center" });
         // navigate(`/login`);
+        setLoading(false);
       }
       if (res.data.success) {
         setSuccess(res.data.success);
         toast.success(res.data.success, { position: "top-center" });
+        setLoading(false);
       }
       if (res.data.error) {
         setError(res.data.error);
         toast.error(res.data.error, { position: "top-center" });
-        // navigate(`/login`);
+        // navigate(`/login`);        setLoading(false);
       }
     } catch (error) {
       return;
@@ -102,17 +114,13 @@ const ActivateAccountPage = () => {
               {success && (
                 <p style={{ color: "green", fontSize: "20px" }}>{success}</p>
               )}
-              {success ? (
-                <Field>
-                  <Link to="/login">
-                    <InputButton>Activate Account</InputButton>
-                  </Link>
-                </Field>
-              ) : (
-                <Field>
-                  <InputButton>Activate Account</InputButton>
-                </Field>
-              )}
+              {loading && <Loading />}
+              <Field>
+                <InputButton>Activate Account</InputButton>
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  <SignInP> sign in</SignInP>
+                </Link>
+              </Field>
             </Form>
           </PwdSectionWrapper>
         </PwdSectionDiv>

@@ -18,7 +18,7 @@ import {
   SearchBoxInput,
   FaSearchIcon,
 } from "./TrainerNavbarElements.js";
-import logo from "../../../images/logo-rm.png";
+import logo from "../../../images/logo-rm1.png";
 import { logOut } from "../../../redux/userRedux.js";
 import axios from "axios";
 
@@ -48,7 +48,7 @@ const TrainerNavbar = ({ toggleMenuItems }) => {
     <Nav>
       <LogoContainer>
         <Link
-          style={{ textDecoration: "none", color: "#111" }}
+          style={{ textDecoration: "none", color: "#ee6c4d" }}
           to={`/${user?.type}`}
         >
           <LogoImage src={logo} alt="brand " />
@@ -59,7 +59,7 @@ const TrainerNavbar = ({ toggleMenuItems }) => {
           {/* redirect to home page */}
           <NavItem>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to={`/${user?.type}`}
             >
               Home
@@ -67,7 +67,7 @@ const TrainerNavbar = ({ toggleMenuItems }) => {
           </NavItem>
           <NavItem>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to="/about"
             >
               About us
@@ -75,7 +75,7 @@ const TrainerNavbar = ({ toggleMenuItems }) => {
           </NavItem>
           <NavItem>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to={`/trainer/your-courses/${user?.id}`}
             >
               Your courses
@@ -84,10 +84,20 @@ const TrainerNavbar = ({ toggleMenuItems }) => {
           <NavItem>
             {activeMenuBtn && (
               <Link
-                style={{ textDecoration: "none", color: "#111" }}
+                style={{ textDecoration: "none", color: "#ee6c4d" }}
                 to="/user/admin/dashboard/add-new-course"
               >
                 Add New Course
+              </Link>
+            )}
+          </NavItem>
+          <NavItem>
+            {user?.role === 1 && (
+              <Link
+                style={{ textDecoration: "none", color: "#ee6c4d" }}
+                to={`/user/admin/dashboard`}
+              >
+                Admin
               </Link>
             )}
           </NavItem>
@@ -105,7 +115,7 @@ const TrainerNavbar = ({ toggleMenuItems }) => {
           </RightbarContainerList>
           <RightbarContainerList>
             <Link
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
               to={`/trainer/profile/update/${user.id}`}
             >
               Profile
@@ -114,13 +124,13 @@ const TrainerNavbar = ({ toggleMenuItems }) => {
           {/* <RightbarContainerList>
             <Link
               to={`/cart`}
-              style={{ textDecoration: "none", color: "#111" }}
+              style={{ textDecoration: "none", color: "#ee6c4d" }}
             >
               <ProfileImg src="https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
             </Link>
           </RightbarContainerList> */}
           <RightbarContainerList onClick={onLogoutHandler}>
-            <Link style={{ textDecoration: "none", color: "#111" }} to={`/`}>
+            <Link style={{ textDecoration: "none", color: "#ee6c4d" }} to={`/`}>
               Logout
             </Link>
           </RightbarContainerList>

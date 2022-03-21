@@ -15,7 +15,7 @@ import {
   RegisterFormWrapper,
   FormAddress,
 } from "./JoinNowFormElements";
-
+import Loading from "../../utils/Loading";
 const JoinNowForm = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState("");
@@ -29,6 +29,7 @@ const JoinNowForm = () => {
   const [noOfHrs, setNoOfHrs] = useState("");
   const [engType, setEngType] = useState("");
   const [skills, setSkills] = useState("");
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
   const email = user?.email;
@@ -37,6 +38,7 @@ const JoinNowForm = () => {
   const joinNowFormHandler = async (event) => {
     event.preventDefault();
     if (mobileNumber.length === 10) {
+      setLoading(true);
       const res = await axios.post(
         "/courses/joinNow",
         {
@@ -61,12 +63,14 @@ const JoinNowForm = () => {
         toast.success(res.data.success, {
           position: "top-center",
         });
+        setLoading(false);
       }
       if (res.data.error) {
         setError(res.data.error);
         toast.error(res.data.error, {
           position: "top-center",
         });
+        setLoading(false);
       }
       setExperience("");
       setMobileNumber("");
@@ -103,8 +107,12 @@ const JoinNowForm = () => {
       <RegisterFormSection>
         <RegisterFormWrapper>
           <Form onSubmit={joinNowFormHandler}>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
+            <Field>
+              {error && <p style={{ color: "red" }}>{error}</p>}
+              {success && <p style={{ color: "green" }}>{success}</p>}
+              {loading && <Loading />}
+            </Field>
+
             <Field>
               <FormLabel>Choose the course Category :</FormLabel>
               <FormSelect

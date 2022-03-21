@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import styled from "styled-components";
+import Loading from "../../utils/Loading";
 const Field = styled.div`
   height: auto;
   width: 100%;
@@ -82,6 +83,7 @@ const TrainerImageForm = (props) => {
   const [image, setImage] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
   const onImageUploadHandler = async (event) => {
@@ -89,7 +91,7 @@ const TrainerImageForm = (props) => {
 
     let data = new FormData();
     data.append("image", image);
-
+    setLoading(true);
     const res = await axios.put(
       `/trainer/profile/update/image/${user?.id}`,
       data,
@@ -102,13 +104,16 @@ const TrainerImageForm = (props) => {
       toast.success(res.data.upload, {
         position: "top-center",
       });
+      setLoading(false);
     }
     if (res.data.error) {
       setError(res.data.error);
       toast.success(res.data.error, {
         position: "top-center",
       });
+      setLoading(false);
     }
+    setImage("");
   };
   return (
     <>
@@ -116,6 +121,7 @@ const TrainerImageForm = (props) => {
       <FormDiv>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
+        {loading && <Loading />}
         <Form onSubmit={onImageUploadHandler} encType="multipart/form-data">
           <Field>
             <FormLabel>Choose Your Picture :</FormLabel>

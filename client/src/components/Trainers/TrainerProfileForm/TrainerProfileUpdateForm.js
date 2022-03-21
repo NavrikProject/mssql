@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Loading from "../../utils/Loading";
 import styled from "styled-components";
+
 const RegisterFormSect = styled.section`
   height: auto;
   background-color: #fff;
@@ -110,6 +112,7 @@ const TrainerDetailForm = (props) => {
   const [location, setLocation] = useState("");
   const [lnProfile, setLnProfile] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
   const firstName = user?.firstname;
@@ -118,6 +121,7 @@ const TrainerDetailForm = (props) => {
   const additionalUpdateFormHandler = async (event) => {
     event.preventDefault();
     if (mobileNumber.length === 10) {
+      setLoading(true);
       const res = await axios.put(
         `/trainer/profile/new/update/${user?.id}`,
         {
@@ -143,12 +147,14 @@ const TrainerDetailForm = (props) => {
         toast.success(res.data.success, {
           position: "top-center",
         });
+        setLoading(false);
       }
       if (res.data.error) {
         setError(res.data.error);
         toast.error(res.data.error, {
           position: "top-center",
         });
+        setLoading(false);
       }
       setExperience("");
       setMobileNumber("");
@@ -159,6 +165,7 @@ const TrainerDetailForm = (props) => {
       setNoOfHrs("");
       setSkills("");
       setDescription("");
+      setLoading(false);
     } else {
       return setError(
         "Mobile number must be at least 10 characters or less than 11 characters"
@@ -181,8 +188,12 @@ const TrainerDetailForm = (props) => {
             encType="multipart/form-data"
             onSubmit={additionalUpdateFormHandler}
           >
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>{success}</p>}
+            <Field>
+              {error && <p style={{ color: "red" }}>{error}</p>}
+              {success && <p style={{ color: "green" }}>{success}</p>}
+              {loading && <Loading />}
+            </Field>
+
             <Field>
               <FormLabel>Bio</FormLabel>
               <FormAddress

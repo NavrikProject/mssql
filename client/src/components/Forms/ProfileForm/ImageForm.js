@@ -50,6 +50,7 @@ const ImageForm = (props) => {
           </ImageTitleChoose>
 
           <ImgInput
+            required
             type="file"
             name="image"
             onChange={(e) => setImage(e.target.files[0])}

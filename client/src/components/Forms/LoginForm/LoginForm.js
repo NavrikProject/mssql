@@ -29,19 +29,21 @@ import {
   HideIcon,
   HomeSectionComponent,
   LoginWrapper,
+  SuccessDiv,
 } from "./LoginFormElements";
 import StudentImg from "../../../images/student-rm.png";
 import TraineeImg from "../../../images/trainer-rm.png";
 import HireImg from "../../../images/hire-rm.png";
 import TrainerImg from "../../../images/trainee-rm.png";
 import GoToTop from "../../GoToTop.js";
+import Loading from "../../utils/Loading";
 // import jwtDecode from "jwt-decode";
 import {
   loginFailure,
   loginStart,
   loginSuccess,
 } from "../../../redux/userRedux";
-import { axiosInstance } from "../../../config";
+import axios from "axios";
 const HomeSection = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,6 +51,7 @@ const HomeSection = () => {
   const [error, setError] = useState("");
   const [wrongPwd, setWrongPwd] = useState("");
   const [showIcon, setShowIcon] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -85,42 +88,51 @@ const HomeSection = () => {
   // login function handler
   const loginFormSubmitHandler = async (event) => {
     event.preventDefault();
-    dispatch(loginStart());
-    const res = await axiosInstance.post(
-      "/auth/login",
-      {
-        username: email,
-        password: password,
-        type: type,
-      },
-      (err, data) => {
-        if (err) {
-          return;
+    try {
+      dispatch(loginStart());
+      setLoading(true);
+      const res = await axios.post(
+        "/auth/login",
+        {
+          username: email,
+          password: password,
+          type: type,
+        },
+        (err, data) => {
+          if (err) {
+            return;
+          }
         }
+      );
+      if (res.data.success) {
+        dispatch(loginSuccess(res.data.success));
+        const userType = res.data.success.type;
+        navigate(`/${userType}`);
+        setLoading(false);
       }
-    );
-    if (res.data.success) {
-      dispatch(loginSuccess(res.data.success));
-      const userType = res.data.success.type;
-      navigate(`/${userType}`);
-    }
 
-    if (res.data.notFound) {
-      dispatch(loginFailure(res.data.notFound));
-      setError(res.data.notFound);
-      setWrongPwd("");
-      // navigate(`/login`);
-    }
-    if (res.data.wrong) {
-      dispatch(loginFailure(res.data.wrong));
-      setWrongPwd(res.data.wrong);
-      setError("");
-      // navigate(`/login`);
+      if (res.data.notFound) {
+        dispatch(loginFailure(res.data.notFound));
+        setError(res.data.notFound);
+        setWrongPwd("");
+        // navigate(`/login`);      ;
+        setLoading(false);
+      }
+      if (res.data.wrong) {
+        dispatch(loginFailure(res.data.wrong));
+        setWrongPwd(res.data.wrong);
+        setError("");
+        // navigate(`/login`);
+        setLoading(false);
+      }
+    } catch (error) {
+      return;
     }
   };
   setTimeout(() => {
     setError("");
     setWrongPwd("");
+    setLoading(false);
   }, 7000);
 
   const [isActive1, setIsActive1] = useState(true);
@@ -171,8 +183,12 @@ const HomeSection = () => {
             <WrapperRightImg src={TraineeImg} />
           </WrapperRight>
           <WrapperCenter>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {wrongPwd && <p style={{ color: "red" }}>{wrongPwd}</p>}
+            <SuccessDiv>
+              {error && <p style={{ color: "red" }}>{error}</p>}
+              {wrongPwd && <p style={{ color: "red" }}>{wrongPwd}</p>}
+              {loading && <Loading />}
+            </SuccessDiv>
+
             <FormContainer>
               <SlideControls>
                 <SlideDiv1

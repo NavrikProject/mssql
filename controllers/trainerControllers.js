@@ -58,7 +58,7 @@ export function updateTrainerApprove(req, res, next) {
                         from: "no-reply@practilearn.com", // Change to your verified sender
                         subject: "Trainer approve emails",
                         html: `<div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-                    <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the Elevation Training Programme</h2>
+                    <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the PractiLearn Training Programme</h2>
                     <p>Congratulations! You're almost set to start using our Platform .
                         You are now approved as trainer in the PractiLearn Programme please contact us through this email address.
                     </p>
@@ -124,7 +124,7 @@ export function updateTrainerDisApprove(req, res, next) {
                         from: "no-reply@practilearn.com", // Change to your verified sender
                         subject: "Trainer rejection emails",
                         html: `<div style="max-width: 700px; margin:auto; border: 10px solid #ddd; padding: 50px 20px; font-size: 110%;">
-                      <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the Elevation Training Programme</h2>
+                      <h2 style="text-align: center; text-transform: uppercase;color: teal;">Welcome to the PractiLearn Training Programme</h2>
                       <p>Hello Hope you are doing well with your works this email about the status of a application about trainer in the PractiLearn Programme ,You have not met our criteria you are not eligible for this trainer post.Thank you for applying.
                       </p>
                       Do not reply this email address

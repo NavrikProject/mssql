@@ -65,7 +65,10 @@ export const WrapperLeft = styled.div`
     display: none;
   }
 `;
-
+export const SuccessDiv = styled.div`
+  margin: 0 auto;
+  text-align: center;
+`;
 export const WrapperCenter = styled.div`
   flex: 8;
   width: 100%;

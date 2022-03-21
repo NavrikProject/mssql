@@ -19,6 +19,8 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import GoToTop from "../../GoToTop.js";
+import Loading from "../../utils/Loading";
+
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,6 +28,7 @@ const ResetPassword = () => {
   const [success, setSuccess] = useState("");
   const [showIcon, setShowIcon] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
+  const [loading, setLoading] = useState(false);
   let pwdMinCharLen = password.length >= 8;
   let pwdHasLowChar = /(.*?[a-z].*)/.test(password);
   let pwdHasCapChar = /(?=.*?[A-Z].*)/.test(password);
@@ -40,6 +43,7 @@ const ResetPassword = () => {
     if (password !== confirmPassword) {
       return setError("Password must be matched the criteria");
     }
+    setLoading(true);
     const res = await axios.put(
       `/auth/reset-password/${token}`,
       { password: password },
@@ -52,11 +56,13 @@ const ResetPassword = () => {
       toast.success("Successfully update the password ,Please log in", {
         position: "top-center",
       });
+      setLoading(false);
       navigate("/login");
     }
     if (res.data.token || res.data.error) {
       setError(res.data.token);
       toast.error(res.data.token);
+      setLoading(false);
     }
     setPassword("");
     setConfirmPassword("");
@@ -70,6 +76,7 @@ const ResetPassword = () => {
             {success && (
               <p style={{ color: "green", fontSize: "20px" }}>{success}</p>
             )}
+            {loading && <Loading />}
             <PwdField>
               <Input
                 value={password}

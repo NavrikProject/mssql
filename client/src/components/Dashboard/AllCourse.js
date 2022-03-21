@@ -1,18 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+import Loading from "../utils/Loading";
 const AllCourse = () => {
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
   const [allCourses, setAllCourse] = useState([]);
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getAllTheCourse = async () => {
+      setLoading(true);
       const res = await axios.get(`/courses/new/dashboard/courses`, {
         headers: { authorization: "Bearer " + token },
       });
-      setAllCourse(res.data);
+      if (res.data) {
+        setAllCourse(res.data);
+        setLoading(false);
+      }
     };
     getAllTheCourse();
   }, [token]);
@@ -21,18 +25,21 @@ const AllCourse = () => {
     const res = await axios.delete(`/courses/new/delete/${course.course_id}`, {
       headers: { authorization: "Bearer " + token },
     });
+    if (res.data) {
+      return;
+    }
   };
   const courseEditHandler = async (course) => {
     // const res = await axios.put(`/courses/new/edit/${course.course_id}`, {
     //   headers: { authorization: "Bearer " + token },
     // });
     // console.log(res);
-    setShowEditForm(true);
   };
   return (
     <div className="rightbarSect">
       <div className="tableDiv">
         <h1>All course</h1>
+        {loading && <Loading />}
         <div className="itmes">
           <div className="flex1">
             <div className="redBox"></div>

@@ -10,7 +10,13 @@ export const Nav = styled.nav`
   z-index: 1000;
   display: flex;
   justify-content: space-between;
-  background: #f5f5f5;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(245, 245, 245, 1) 32%,
+    rgba(224, 251, 252, 1) 100%
+  );
   align-items: center;
   padding: 10px 80px;
   color: #fff;

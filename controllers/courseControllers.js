@@ -191,7 +191,7 @@ export function addJoinNowCourse(req, res) {
     email,
     firstName,
     lastName,
-    mobile,
+    mobileNumber,
     experience,
     masterCourseNameId,
     qualification,
@@ -255,7 +255,7 @@ export function addJoinNowCourse(req, res) {
                                   "','" +
                                   lastName +
                                   "','" +
-                                  mobile +
+                                  mobileNumber +
                                   "','" +
                                   qualification +
                                   "', '" +

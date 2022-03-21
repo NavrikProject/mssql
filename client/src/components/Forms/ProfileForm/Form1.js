@@ -15,6 +15,7 @@ import {
   FormSelect,
 } from "./FormProfileElements";
 import { toast } from "react-toastify";
+import Loading from "../../utils/Loading";
 
 const Form1 = (props) => {
   const [error, setError] = useState("");
@@ -25,12 +26,15 @@ const Form1 = (props) => {
   const [experience, setExperience] = useState("");
   const [graduate, setGraduate] = useState("");
   const [profession, setProfession] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
 
   const profileAccountHandler = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true);
       const res = await axios.put(
         `/trainee/profile/update/${user?.id}`,
         {
@@ -48,12 +52,14 @@ const Form1 = (props) => {
         toast.success("Successfully update your personal details", {
           position: "top-center",
         });
+        setLoading(false);
       }
       if (res.data.error) {
         setError(res.data.error);
         toast.error("There was a problem updating your personal details", {
           position: "top-center",
         });
+        setLoading(false);
       }
     } catch (error) {
       return;
@@ -64,6 +70,7 @@ const Form1 = (props) => {
     setGraduate("");
     setExperience("");
     setAddress("");
+    setLoading(false);
   };
   setTimeout(() => {
     setError("");
@@ -74,7 +81,8 @@ const Form1 = (props) => {
       <CloseButton onClick={props.personal} />
       <FormDiv>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
+        {success && <p style={{ color: "green" }}>{success}</p>}{" "}
+        {loading && <Loading />}
         <Form onSubmit={profileAccountHandler}>
           <FormInput
             required

@@ -1,7 +1,6 @@
 import moment from "moment";
 import sql from "mssql";
 import config from "../config/dbconfig.js";
-import sgMail from "@sendgrid/mail";
 import azureStorage from "azure-storage";
 import intoStream from "into-stream";
 import dotenv from "dotenv";

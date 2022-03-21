@@ -15,7 +15,7 @@ import {
   SearchBoxInput,
   FaSearchIcon,
 } from "./NavbarElements";
-import logo from "../../../images/logo-update.png";
+import logo from "../../../images/logo-rm1.png";
 import { useSelector } from "react-redux";
 
 const Navbar = ({ toggleMenuItems }) => {

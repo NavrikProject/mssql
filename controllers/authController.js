@@ -100,7 +100,7 @@ export async function emailAccountActivation(req, res) {
             request.query(
               `select * from users_dtls where user_email = @email`,
               (err, result) => {
-                if (result) {
+                if (result.recordset.length > 0) {
                   return res.send({
                     error: "This email address all ready exists Please sign in",
                   });

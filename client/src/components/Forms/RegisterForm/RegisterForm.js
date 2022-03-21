@@ -27,7 +27,7 @@ import {
 } from "./RegisterFormElements";
 import GoToTop from "../../GoToTop";
 import { toast } from "react-toastify";
-
+import Loading from "../../utils/Loading";
 const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -39,7 +39,7 @@ const RegisterForm = () => {
   const [success, setSuccess] = useState("");
   const [showIcon, setShowIcon] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   let pwdMinCharLen = password.length >= 8;
   let pwdHasLowChar = /(.*?[a-z].*)/.test(password);
   let pwdHasCapChar = /(?=.*?[A-Z].*)/.test(password);
@@ -53,6 +53,7 @@ const RegisterForm = () => {
     event.preventDefault();
     // http:localhost:5000/api/auth/register
     try {
+      setLoading(true);
       const res = await axios.post("/auth/email-register", {
         email: email,
         firstName: firstName,
@@ -62,16 +63,20 @@ const RegisterForm = () => {
       });
       if (res.data.required) {
         setError(res.data.required);
+        setLoading(false);
       }
       if (res.data.exists) {
         setError(res.data.exists);
+        setLoading(false);
       }
       if (res.data.error) {
         setError(res.data.error);
+        setLoading(false);
       }
       if (res.data.success) {
         setSuccess(res.data.success);
         toast.success(res.data.success, { position: "top-center" });
+        setLoading(false);
       }
       setEmail("");
       setPassword("");
@@ -79,6 +84,7 @@ const RegisterForm = () => {
       setFirstName("");
       setLastName("");
       setConfirmPassword("");
+      setLoading(false);
     } catch (error) {
       return;
     }
@@ -97,6 +103,7 @@ const RegisterForm = () => {
                 <Form onSubmit={registerSubmitHandler}>
                   {success && <p style={{ color: "green" }}>{success}</p>}
                   {error ? <p style={{ color: "red" }}>{error}</p> : null}
+                  {loading && <Loading />}
                   <Field>
                     <Input
                       value={email}

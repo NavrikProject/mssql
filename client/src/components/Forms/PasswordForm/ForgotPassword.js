@@ -9,19 +9,24 @@ import {
   InputButton,
 } from "./PwdResetElements";
 import GoToTop from "../../GoToTop.js";
+import Loading from "../../utils/Loading";
 import axios from "axios";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
   const forgotpasswordHandler = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const res = await axios.post("/auth/forgot-password", { email: email });
     if (res.data.success) {
       setSuccess(res.data.success);
+      setLoading(false);
     }
     if (res.data.error) {
       setError(res.data.error);
+      setLoading(false);
     }
     setEmail("");
   };
@@ -34,6 +39,7 @@ const ForgotPassword = () => {
             {success && (
               <p style={{ color: "green", fontSize: "20px" }}>{success}</p>
             )}
+            {loading && <Loading />}
             <Field>
               <Input
                 required

@@ -28,7 +28,7 @@ import {
 import TrainerImageForm from "./TrainerImageForm.js";
 import TrainerProfileUpdateForm from "./TrainerProfileUpdateForm.js";
 import BankDetails from "./BankDetails.js";
-
+import Loading from "../../utils/Loading";
 const Trainer = () => {
   const [personalForm, setPersonalForm] = useState(false);
   const [additionalForm, setAdditionalForm] = useState(false);
@@ -37,6 +37,7 @@ const Trainer = () => {
   const [deleteAccountForm, setDeleteAccountForm] = useState(false);
   const [changeImageForm, setChangeImageForm] = useState(false);
   const [trainerDetails, setTrainerDetails] = useState([]);
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.user.currentUser);
 
   const showPersonalForm = () => {
@@ -85,10 +86,12 @@ const Trainer = () => {
 
   useEffect(() => {
     const getTrainerProfileDetails = async () => {
+      setLoading(true);
       const res = await axios.get(`/trainer/profile/new/get/${user?.id}`, {
         headers: { authorization: "Bearer " + user.accessToken },
       });
       setTrainerDetails(res.data);
+      setPersonalForm(false);
     };
     getTrainerProfileDetails();
   }, [user.id, user.accessToken]);
@@ -239,9 +242,15 @@ const Trainer = () => {
                 </>
               ))
             ) : (
-              <NextButton onClick={showAdditionalForm}>
-                Additional Trainer Details
-              </NextButton>
+              <>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <NextButton onClick={showAdditionalForm}>
+                    Additional Trainer Details
+                  </NextButton>
+                )}
+              </>
             )}
           </TrainerRightCol>
         </TrainerFlex>

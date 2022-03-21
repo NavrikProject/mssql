@@ -19,7 +19,7 @@ import {
   SearchBoxInput,
   FaSearchIcon,
 } from "./JobNavbarElements.js";
-import logo from "../../../images/logo-rm.png";
+import logo from "../../../images/logo-rm1.png";
 import { logOut } from "../../../redux/userRedux.js";
 
 const JobNavbar = ({ toggleMenuItems }) => {
@@ -35,10 +35,7 @@ const JobNavbar = ({ toggleMenuItems }) => {
   return (
     <Nav>
       <LogoContainer>
-        <Link
-          style={{ textDecoration: "none", color: "#111" }}
-          to={`/${type}`}
-        >
+        <Link style={{ textDecoration: "none", color: "#111" }} to={`/${type}`}>
           <LogoImage src={logo} alt="brand " />
         </Link>
       </LogoContainer>

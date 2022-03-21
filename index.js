@@ -5,7 +5,6 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import cookieParser from "cookie-parser";
-import sgMail from "@sendgrid/mail";
 import sql from "mssql/msnodesqlv8.js";
 import config from "./config/dbconfig.js";
 import fileUpload from "express-fileupload";

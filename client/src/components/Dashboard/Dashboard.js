@@ -45,7 +45,7 @@ const Dashboard = () => {
       <div className="topbar">
         <div className="topbarWrapper">
           <div className="topLeft">
-            <span className="logo">Elevashun</span>
+            <span className="logo">PractiLearn</span>
           </div>
           <div className="topRight">
             <div className="topbarIconContainer">

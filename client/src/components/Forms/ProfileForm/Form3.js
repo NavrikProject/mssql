@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Loading from "../../utils/Loading.js";
 const Form3 = (props) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -21,7 +22,7 @@ const Form3 = (props) => {
   const [success, setSuccess] = useState("");
   const [showIcon, setShowIcon] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   let pwdMinCharLen = password.length >= 8;
   let pwdHasLowChar = /(.*?[a-z].*)/.test(password);
   let pwdHasCapChar = /(?=.*?[A-Z].*)/.test(password);
@@ -37,6 +38,7 @@ const Form3 = (props) => {
       return setError("The password must matched");
     }
     try {
+      setLoading(true);
       const res = await axios.put(
         `/auth/change-password/${user?.id}`,
         {
@@ -51,14 +53,17 @@ const Form3 = (props) => {
           position: "top-center",
         });
         setError("");
+        setLoading(false);
       }
       if (res.data.error) {
         setError(res.data.error);
         setSuccess("");
+        setLoading(false);
       }
     } catch (error) {}
     setPassword("");
     setConfirmPassword("");
+    setLoading(false);
   };
 
   setTimeout(() => {
@@ -71,6 +76,7 @@ const Form3 = (props) => {
       <FormDiv>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
+        {loading && <Loading />}
         <Form onSubmit={onChangePasswordHandler}>
           <PwdField>
             <FormInput

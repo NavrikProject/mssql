@@ -2,23 +2,29 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import "./Dashboard.css";
+import Loading from "../utils/Loading";
 const UsersTable = () => {
   const user = useSelector((state) => state.user.currentUser);
   const token = user?.accessToken;
   const [allTrainers, setAllTrainers] = useState([]);
   const [approve, setApprove] = useState(true);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getCourseByTitles = async () => {
+      setLoading(true);
       const res = await axios.get(`/trainer/getAllTrainers`, {
         headers: { authorization: "Bearer " + token },
       });
-      setAllTrainers(res.data);
+      if (res.data) {
+        setAllTrainers(res.data);
+        setLoading(false);
+      }
     };
     getCourseByTitles();
   }, [token]);
 
   const trainerApproveHandler = async (trainer) => {
+    setLoading(true);
     const res = await axios.put(
       `/trainer/update/approve`,
       { id: trainer.trainer_details_id },
@@ -30,9 +36,11 @@ const UsersTable = () => {
       alert("This will make trainer will be approved");
       setApprove(!approve);
       window.location.reload();
+      setLoading(false);
     }
   };
   const trainerDisApproveHandler = async (trainer) => {
+    setLoading(true);
     const res = await axios.put(
       `/trainer/update/disapprove`,
       { id: trainer.trainer_details_id },
@@ -41,6 +49,7 @@ const UsersTable = () => {
       }
     );
     if (res.data.disapproved) {
+      setLoading(false);
       alert("This will make trainer has been disapproved");
       setApprove(!approve);
       window.location.reload();
@@ -50,6 +59,7 @@ const UsersTable = () => {
     <div className="rightbarSect">
       <div className="tableDiv">
         <h1>Approve the trainers</h1>
+        {loading && <Loading />}
         <div className="itmes">
           <div className="flex1">
             <div className="greenBox"></div>

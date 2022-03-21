@@ -29,7 +29,7 @@ import {
   Title,
 } from "./FooterElements";
 import "./footer.css";
-import logo from "../../../images/logo-update.png";
+import logo from "../../../images/logo-rm1.png";
 import { useSelector } from "react-redux";
 
 const Footer = () => {

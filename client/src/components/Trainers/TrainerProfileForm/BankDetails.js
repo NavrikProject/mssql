@@ -6,7 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { AiOutlineClose } from "react-icons/ai";
-
+import Loading from "../../utils/Loading";
 const Form = styled.form`
   width: 100%;
   margin: 0 auto;
@@ -97,7 +97,7 @@ const BankDetails = (props) => {
   const [error, setError] = useState(false);
   const [showErrorMessage, setErrorShowMessage] = useState(false);
   const [showSuccessMessage, setSuccessMessage] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   let upperLetters = /^[A-Za-z]{4}[a-zA-Z0-9]{7}$/.test(ifscCode);
   const user = useSelector((state) => state.user.currentUser);
   const verifyIfscCode = async (event) => {
@@ -113,6 +113,7 @@ const BankDetails = (props) => {
     ) {
       setErrorShowMessage(true);
     } else {
+      setLoading(true);
       const response = await axios.post(
         `/trainer/profile/bank/details/add/${user?.id}`,
         {
@@ -122,20 +123,26 @@ const BankDetails = (props) => {
         },
         { headers: { authorization: "Bearer " + user?.accessToken } }
       );
-      console.log(response.data);
       if (response.data.success) {
         setSuccessMessage(response.data.success);
         toast.success(response.data.success, {
           position: "top-center",
         });
+        setLoading(false);
       }
       if (response.data.error) {
         setErrorShowMessage(response.data.error);
         toast.error(response.data.error, {
           position: "top-center",
         });
+        setLoading(false);
       }
     }
+    setAccountNumber("");
+    setConfirmAccountNumber("");
+    setIfscCode("");
+    setConfirmValidIfscCode("");
+    setFullName("");
   };
 
   useEffect(() => {
@@ -157,14 +164,20 @@ const BankDetails = (props) => {
       <CloseButton onClick={props.personal} />
       <FormDiv>
         <Form onSubmit={verifyIfscCode}>
-          {showErrorMessage && (
-            <p style={{ color: "red", fontSize: "20px" }}>{showErrorMessage}</p>
-          )}
-          {showSuccessMessage && (
-            <p style={{ color: "green", fontSize: "20px" }}>
-              {showSuccessMessage}
-            </p>
-          )}
+          <ForDiv>
+            {showErrorMessage && (
+              <p style={{ color: "red", fontSize: "20px" }}>
+                {showErrorMessage}
+              </p>
+            )}
+            {showSuccessMessage && (
+              <p style={{ color: "green", fontSize: "20px" }}>
+                {showSuccessMessage}
+              </p>
+            )}
+            {loading && <Loading />}
+          </ForDiv>
+
           <ForDiv>
             <FormLabel htmlFor="">Enter Your Full Name :</FormLabel>
             <FormInput
